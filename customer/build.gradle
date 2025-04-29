@@ -1,0 +1,60 @@
+plugins {
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+configurations.all {
+	// Force Jakarta dependencies and exclude any javax
+	resolutionStrategy {
+		eachDependency { DependencyResolveDetails details ->
+			if (details.requested.group == 'javax.servlet') {
+				details.useTarget 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+			}
+		}
+	}
+}
+
+dependencies {
+	// Development tools
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Spring Boot starters
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+//	implementation 'org.flywaydb:flyway-core:11.7.1'
+//	implementation 'org.flywaydb:flyway-database-postgresql:11.3.4'
+	// Database
+	implementation 'org.postgresql:postgresql:42.7.2'
+
+	// Documentation
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+	// Testing
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+bootJar {
+	archiveFileName = "${project.name}.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

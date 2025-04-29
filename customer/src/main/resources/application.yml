@@ -10,11 +10,13 @@ spring:
       idle-timeout: 30000
       max-lifetime: 200000
       minimum-idle: 2
+  flyway:
+    schemas: customer
+    locations: classpath:db.migration
   jpa:
     properties:
       hibernate:
         generate_statistics: true
-        ddl-auto: update
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 server:

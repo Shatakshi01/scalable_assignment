@@ -2,6 +2,7 @@ package com.scalable.loan.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name="loan" , schema = "loan")
 public class Loan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal loanAmount;
     private String loanBranch;

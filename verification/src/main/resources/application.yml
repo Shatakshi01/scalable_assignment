@@ -10,11 +10,13 @@ spring:
       idle-timeout: 30000
       max-lifetime: 200000
       minimum-idle: 2
+  flyway:
+    schemas: kyc
+    locations: classpath:db.migrations
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        ddl-auto : update
     show-sql: true
 server:
   port: 8083 # Change this to 8081, 8082, 8083 for other services

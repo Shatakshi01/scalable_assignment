@@ -1,17 +1,21 @@
 package com.scalable.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scalable.customer.entity.AddressDetails;
 import com.scalable.customer.entity.Customer;
 import com.scalable.customer.repository.CustomerRepository;
 import com.scalable.customer.request.AddressDto;
+import com.scalable.customer.request.CustomerDTO;
 import com.scalable.customer.request.CustomerRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@Slf4j
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -47,10 +51,26 @@ public class CustomerService {
                 .secondLine(dto.getSecondLine())
                 .customer(customer)
                 .build())
-            .collect(Collectors.toList());
+            .toList();
     }
 
-    public Customer getCustomerDetails(Long loanId) {
-        return customerRepository.findByLoanId(loanId);
+    public CustomerDTO getCustomerDetails(Long loanId) {
+        Customer customer = customerRepository.findByLoanId(loanId);
+
+        List<AddressDto> address = customer.getAddresses().stream().map(dto -> AddressDto.builder()
+            .firstLine(dto.getFirstLine())
+            .secondLine(dto.getSecondLine())
+            .build()).toList();
+        CustomerDTO customerDTO = CustomerDTO.builder()
+            .firstName(customer.getFirstName())
+            .secondName(customer.getSecondName())
+            .addresses(address)
+            .build();
+        try {
+            log.info("CustomerDTO to return: {}", new ObjectMapper().writeValueAsString(customerDTO));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return customerDTO;
     }
 }

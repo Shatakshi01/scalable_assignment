@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class AddressDto {
     private String firstLine;
     private String secondLine;
+
 }

@@ -28,6 +28,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/microfinance
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FLYWAY_VALIDATE_MIGRATION_NAMING: false
     depends_on:
       postgres:
         condition: service_healthy
@@ -43,9 +44,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/microfinance
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FLYWAY_VALIDATE_MIGRATION_NAMING: false
     depends_on:
       postgres:
         condition: service_healthy
+#    command: ./gradlew clean build bootRun
     restart: on-failure
 
   credit-service:
@@ -58,9 +61,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/microfinance
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FLYWAY_VALIDATE_MIGRATION_NAMING : false
     depends_on:
       postgres:
         condition: service_healthy
+#    command: ../gradlew clean build bootRun
     restart: on-failure
 
   kyc-service:
@@ -73,9 +78,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/microfinance
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_FLYWAY_VALIDATE_MIGRATION_NAMING: false
     depends_on:
       postgres:
         condition: service_healthy
+#    command: ./gradlew clean build bootRun
     restart: on-failure
 
 volumes:

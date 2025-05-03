@@ -39,3 +39,8 @@ test {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveFileName = "${project.name}.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

@@ -66,29 +66,13 @@ public class LoanService {
             .bodyValue(buildCustomerDto(loanRequest.getCustomerDetails(),loanId))
             .retrieve()
             .onStatus(
-                HttpStatusCode::isError,
+                httpStatusCode -> httpStatusCode.isError(),
                 response -> response.bodyToMono(String.class)
                     .map(errorBody -> new RuntimeException(
                         "Customer service error: " + response.statusCode() + " - " + errorBody
                     ))
             )
             .bodyToMono(Void.class);
-    }
-
-    private CustomerDTo buildCustomerDto(CustomerDTo customerDetails, Long loanId) {
-        List<AddressDto> addressDetails = customerDetails.getAddress().stream()
-            .map(addressDto -> AddressDto.builder()
-                .firstLine(addressDto.getFirstLine())
-                .secondLine(addressDto.getSecondLine())
-                .build())
-            .collect(Collectors.toList());
-
-        return CustomerDTo.builder()
-            .loanId(loanId)
-            .firstName(customerDetails.getFirstName())
-            .secondName(customerDetails.getSecondName())
-            .address(addressDetails)
-            .build();
     }
 
     private Mono<Void> saveCreditDetails(LoanRequest loanRequest, Long loanId) {
@@ -138,6 +122,23 @@ public class LoanService {
             .loanId(id)
             .aadhar(loanRequest.getAadhar())
             .pan(loanRequest.getPan())
+            .build();
+    }
+
+
+    private CustomerDTo buildCustomerDto(CustomerDTo customerDetails, Long loanId) {
+        List<AddressDto> addressDetails = customerDetails.getAddress().stream()
+            .map(addressDto -> AddressDto.builder()
+                .firstLine(addressDto.getFirstLine())
+                .secondLine(addressDto.getSecondLine())
+                .build())
+            .collect(Collectors.toList());
+
+        return CustomerDTo.builder()
+            .loanId(loanId)
+            .firstName(customerDetails.getFirstName())
+            .secondName(customerDetails.getSecondName())
+            .address(addressDetails)
             .build();
     }
 
